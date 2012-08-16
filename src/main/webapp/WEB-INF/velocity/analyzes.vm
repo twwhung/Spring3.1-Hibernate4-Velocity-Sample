@@ -1,0 +1,75 @@
+<div class="page_box">
+	<div class="content_title">戰績表</div>	
+	<hr/>
+	<div class="frm_second_title">搭檔累積</div>	
+	<table id="tbl_tables" >		
+	</table>
+	<hr/>
+	<div class="frm_second_title enter">個人累積</div>
+	<table id="tbl_singletables" >		
+	</table>
+</div>
+
+<script>
+	## $pairSummaryJSONList is a model attribute	
+	var pairSummarys = $pairSummaryJSONList;
+	
+	## $singleSummaryJSONList is a model attribute	
+	var singleSummarys = $singleSummaryJSONList;	
+	
+	var users = {};
+	#foreach($p in $playerList)
+	users[$p.id] = '$p.name';	
+	#end
+	$(function(){
+		var tblTables = $("#tbl_tables");		
+		var tblSingleTables = $("#tbl_singletables");
+		tblTables.dataTable({
+			"aaData": pairSummarys, 
+			"aoColumns":[								
+				{"sTitle" : "搭檔" ,"sWidth": "35%", "mData":function(data){
+					return users[data.pid1] + " + " + users[data.pid2];
+				}},								
+				{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
+					return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
+				}},
+				{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
+				{"sTitle" : "敗場" ,"mData":"loseCount"},
+				{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
+				
+			],
+			"bLengthChange" : false,
+			"bAutoWidth": true,
+			"iDisplayLength": 20,
+			"oLanguage":{
+				"sInfo": "第_START_至_END_組，總計_TOTAL_組",
+				"sInfoFiltered": "全部_MAX_組",
+				"sInfoEmpty": "條件內無搭檔"
+			}
+		}).fnSort([[1,'desc']]);	;
+				
+		tblSingleTables.dataTable({
+			"aaData": singleSummarys, 
+			"aoColumns":[								
+				{"sTitle" : "玩家" ,"mData":'pid',"mRender":function(id){					
+					return users[id];
+				}},						
+				{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
+					return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
+				}},
+				{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
+				{"sTitle" : "敗場" ,"mData":"loseCount"},
+				{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
+				
+			],
+			"bLengthChange" : false,
+			"bAutoWidth": true,
+			"iDisplayLength": 20,
+			"oLanguage":{
+				"sInfo": "第_START_至_END_員，總計_TOTAL_人",
+				"sInfoFiltered": "全部_MAX_人",
+				"sInfoEmpty": "條件內無玩家"
+			}
+		}).fnSort([[1,'desc']]);	;
+	});
+</script>

@@ -1,0 +1,109 @@
+
+
+
+
+<div class="page_box">
+	<div class="content_title">成員管理</div>
+	<fieldset class="fld_frm">
+		<legend>
+			新增成員
+		</legend>
+		<form id="frm_addmember">
+			<span>Name: </span>
+			<input type="text" id="ipt_name"/>
+			<span class="btn" id="btn_addmember">Add</span>
+		</form>
+	</fieldset>
+	
+	<table id="tbl_members" >		
+	</table>
+</div>
+<script>
+	## $memberJSONList is a model attribute
+	var members = $memberJSONList;		
+
+	
+#[[ 	
+	$(function(){
+		var tblMembers = $("#tbl_members");		
+		tblMembers.dataTable({
+			"aaData": members, 
+			"aoColumns":[				
+				{"sTitle" : "Player ID","mDataProp":"id"},
+				{"sTitle" : "Name" ,"mDataProp":"name","sClass" : "td_name"},
+				{"sTitle" : "Edit", "sDefaultContent": "<span class='btn edit'>Edit</span>" ,"sClass" : "td_edit"}
+			],
+			"bLengthChange" : false,
+			"bAutoWidth": true,
+			"iDisplayLength": 20,
+			"oLanguage":{
+				"sInfo": "第_START_至_END_位成員，總計_TOTAL_員",
+				"sInfoFiltered": "全員_MAX_員",
+				"sInfoEmpty": "條件內無人員"
+			}
+		});	
+		tblMembers.on("click","span.btn",function(){
+			var tmp = $(this);
+			var oTable = tblMembers.dataTable();									
+			var nRow = tmp.closest("tr")[0];			
+			if (tmp.is(".edit")){
+				editRow(oTable, nRow);	
+			}else if(tmp.is(".save")){
+				saveRow(oTable, nRow);				
+			}						
+		});
+		$("#btn_addmember").click(function(){
+			var curName = $("#ipt_name").val();
+			if (!curName){				
+				return ;
+			}
+			$.post("./addplayer",{
+				"name" : curName
+			},"json").done(function(result){				
+				if(result.success){
+					var oTable = tblMembers.dataTable();			 			 
+					oTable.fnAddData([result.value]);
+					oTable.fnSort( [ [0,'desc']] );	
+				}else{
+					alert("新增成員失敗!");
+				}					
+			}).fail(function(){
+				alert("Server error");
+			});
+							
+		});		
+		function editRow(oTable, nRow){
+			var aData = oTable.fnGetData(nRow);
+			$(nRow).find("td.td_name").html('<input type="text" class="ipt_name" value="'+ aData.name +'">')
+			.siblings("td.td_edit").html("<span class='btn save'>save</span>");					
+		}
+		function saveRow(oTable, nRow){
+			var aData = oTable.fnGetData(nRow);						
+			var inputName = $.trim($("input.ipt_name",nRow).val());
+			if (aData.name != inputName){												
+				$.post("./updateplayer",{
+					"name" : inputName,
+					"id" : aData.id
+				},"json").done(function(result){				
+					if(result.success){
+						aData.name = inputName;							
+					}else{
+						alert("更新成員失敗!");
+					}					
+				}).fail(function(){
+					alert("Server error");
+				}).complete(function(){
+					oTable.fnUpdate(aData,nRow);
+					oTable.fnDraw();
+				});				
+			}else{
+				oTable.fnUpdate(aData,nRow);
+				oTable.fnDraw();				
+			}
+			
+		}
+	});
+]]#	
+	
+	
+</script>

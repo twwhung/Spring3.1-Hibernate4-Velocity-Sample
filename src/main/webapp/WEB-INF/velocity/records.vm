@@ -1,0 +1,111 @@
+<div class="page_box">
+	<div class="content_title">紀錄管理</div>
+	<fieldset class="fld_frm">
+		<legend>
+			新增紀錄
+		</legend>
+		<form id="frm_addrecord">			
+			<div class="frm_second_title">Winner</div>			
+			<div>				
+				#set($slctPlayersName="winpid1")
+				<span> 隊員1: </span>#parse("\elements\slctplayers.vm")	
+				#set($slctPlayersName="winpid2")	
+				<span> 隊員2: </span>#parse("\elements\slctplayers.vm")		
+				<span> 分數: </span><input type="number" name="winscore" min="0" value="1"/>
+			</div>
+			<div class="frm_second_title">Loser</div>			
+			<div>				
+				#set($slctPlayersName="losepid1")
+				<span> 隊員1: </span>#parse("\elements\slctplayers.vm")
+				#set($slctPlayersName="losepid2")
+				<span> 隊員2: </span>#parse("\elements\slctplayers.vm")				
+				<span> 分數: </span><input type="number" name="losescore" min="0" value="0"/>
+			</div>
+			<div class="right">
+				<span class="btn" id="btn_addrecord">Add new record</span>				
+			</div>			
+		</form>
+	</fieldset>	
+	<table id="tbl_games" >		
+	</table>
+</div>
+
+
+<script>
+	## $gameJSONList is a model attribute
+	var games = $gameJSONList;		
+	
+	var users = {};
+	#foreach($p in $playerList)
+	users[$p.id] = '$p.name';	
+	#end
+	
+	$(function(){
+		var tblGames = $("#tbl_games");		
+		tblGames.dataTable({
+			"aaData": games, 
+			"aoColumns":[				
+				{"sTitle" : "Game","mDataProp":"id"},
+				{"sTitle" : "Winner1" ,"mData":'winPid1',"mRender":function(id){					
+					return users[id];
+				}},
+				{"sTitle" : "Winner2" ,"mData":'winPid2',"mRender":function(id){					
+					return users[id];
+				}},
+				{"sTitle" : "Score" ,"mDataProp":"winScore"},
+				{"sTitle" : "Loser1" ,"mData":'losePid1',"mRender":function(id){					
+					return users[id];
+				}},
+				{"sTitle" : "Loser2" ,"mData":'losePid2',"mRender":function(id){					
+					return users[id];
+				}},
+				{"sTitle" : "Score" ,"mDataProp":"loseScore"},
+				{"sTitle" : "Delete", "sDefaultContent": "<span class='btn delete'>Delete</span>"}
+			],
+			"bLengthChange" : false,
+			"bAutoWidth": true,
+			"iDisplayLength": 20,
+			"oLanguage":{
+				"sInfo": "第_START_至_END_場紀錄，總計_TOTAL_場",
+				"sInfoFiltered": "全部_MAX_場",
+				"sInfoEmpty": "條件內無紀錄"
+			}
+		}).fnSort([[0,'desc']]);		
+		tblGames.on("click","span.delete",function(){			
+			if (confirm("Are you sure to delete the game?")){
+				var oTable = tblGames.dataTable();
+				var nRow = $(this).closest("tr")[0];
+				var id = oTable.fnGetData(nRow).id;
+				$.post("./deleterecord",{
+					"id" : id
+				},"json").success(function(result){
+					if(result.success){
+						oTable.fnDeleteRow(nRow);						
+					}else{
+						alert("刪除紀錄失敗!");
+					}			
+				}).fail(function(){
+					alert("error!!");
+				});		
+			};		
+		});
+		
+		$("#btn_addrecord").click(function(){
+			$.post("./adddoublerecord",$("#frm_addrecord").serializeArray(),"json").success(function(result){
+				if(result.success){
+					var oTable = tblGames.dataTable();			 			 
+					oTable.fnAddData([result.value]);
+					oTable.fnSort( [ [0,'desc']] );	
+				}else{
+					alert("新增紀錄失敗!");
+				}			
+			}).fail(function(){
+				alert("error!!");
+			});		
+		});	
+		$("#frm_addrecord select.slct_players").change(function(){
+			$("#frm_addrecord select.slct_players[value=" + this.value+ "]").not(this).val(-1);
+		})		
+	});
+
+</script>

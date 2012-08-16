@@ -1,0 +1,7 @@
+<select class="slct_players" name="$slctPlayersName">
+<option value="-1">請選擇</option>
+#foreach($p in $playerList)
+<option value="$p.id">$esc.html($p.name)</option>
+#end
+
+</select>

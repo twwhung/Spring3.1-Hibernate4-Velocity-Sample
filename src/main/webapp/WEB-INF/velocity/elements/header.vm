@@ -1,0 +1,6 @@
+<div id="wb_mark" class="left" >Badminton</div>
+<ul id="menu_header" class="left">
+	<li><a href="./analyzes.show">戰績表</a></li>
+	<li><a href="./records.show">紀錄管理</a></li>
+	<li><a href="./players.show">成員管理</a></li>	       
+</ul>

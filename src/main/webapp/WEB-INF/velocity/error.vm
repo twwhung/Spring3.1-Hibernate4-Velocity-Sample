@@ -1,0 +1,4 @@
+#set($layout = "\layouts\ajax.vm")
+
+${errorJSON}
+

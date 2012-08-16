@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"		
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<bean id="imobSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">		
+		<property name="dataSource" ref="imobDataSource" />
+		<property name="packagesToScan" value="com.imob.domains"/>				
+		<property name="hibernateProperties">
+			<props>								
+				<prop key="hibernate.dialect"> org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>								
+			</props>
+		</property>
+	</bean>
+	<bean id="imobTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		  <property name="sessionFactory" ref="imobSessionFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="imobTransactionManager" proxy-target-class="true"/>	
+</beans>	
