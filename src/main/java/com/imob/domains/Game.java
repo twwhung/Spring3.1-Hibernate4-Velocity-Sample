@@ -9,15 +9,17 @@ import javax.validation.constraints.Min;
 
 
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.ScriptAssert;
 import org.springframework.validation.annotation.Validated;
 
-import com.imob.validations.GameValid;
+
 
 
 @Validated
 @Entity
 @Table(name="games")
-@GameValid(message="Unvalid Game config")
+//@GameValid(message="Unvalid Game config")
+@ScriptAssert(lang = "javascript", script = "_this.validGame()", message = "Not valid game")
 public class Game {
 	
 	private int id;
@@ -41,6 +43,7 @@ public class Game {
 	public void setId(int i){
 		id = i;
 	}
+	@Min(1)
 	@Column(name="gid", updatable = false)
 	public int getGid(){		
 		return gid;
@@ -91,8 +94,7 @@ public class Game {
 	}
 	public void setWinScore(int winScore){
 		this.winScore = winScore;
-	}
-	
+	}	
 	@Min(1)
 	@Column(name="losepid1")
 	public int getLosePid1(){		
@@ -116,12 +118,9 @@ public class Game {
 			this.losePid2 = losePid1;
 			losePid1 = losePid2;
 			return ;
-		}
-		
-		
+		}			
 		this.losePid2 = losePid2;
-	}
-	
+	}	
 	@Min(0)
 	@Column(name="losescore")
 	public int getLoseScore(){		
@@ -129,10 +128,12 @@ public class Game {
 	}
 	public void setLoseScore(int loseScore){
 		this.loseScore = loseScore;
-	}
-	
-	
-	
-	
-	
+	}	
+	public boolean validGame(){
+		if (winPid1 >= winPid2 || winPid1 == losePid1 || winPid1 == losePid2 || winPid2 == losePid1 || 
+				winPid2 == losePid2 || losePid1 >= losePid2 || winScore <= loseScore){
+			return false;			
+		}		
+		return true;
+	}			
 }

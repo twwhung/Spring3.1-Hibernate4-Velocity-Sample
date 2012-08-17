@@ -20,6 +20,8 @@ public class PlayerDaoImpl extends BasicDaoImpl implements PlayerDao{
 	}
 	@SuppressWarnings("unchecked")
 	public List<Player> listUser(int gid) {
+		
+		
 		Query query = getCurrentSession().createQuery("from Player where gid =:gid"); 
 		query.setParameter("gid", gid);				
 		return query.list();

@@ -1,4 +1,4 @@
-<div>$now</div>
+
 
 
 
@@ -20,9 +20,7 @@
 </div>
 <script>
 	## $memberJSONList is a model attribute
-	var members = $memberJSONList;		
-
-	
+	var members = $memberJSONList;			
 #[[ 	
 	$(function(){
 		var tblMembers = $("#tbl_members");		

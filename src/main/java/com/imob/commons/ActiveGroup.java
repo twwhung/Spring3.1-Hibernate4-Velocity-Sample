@@ -9,4 +9,4 @@ import java.lang.annotation.RetentionPolicy;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ArmBean {}
+public @interface ActiveGroup {}
