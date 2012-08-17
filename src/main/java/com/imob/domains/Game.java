@@ -63,6 +63,11 @@ public class Game {
 		return winPid1;
 	}
 	public void setWinPid1(int winPid1){
+		if(winPid1 > this.winPid2 && winPid2 != 0){
+			this.winPid1 = this.winPid2;
+			this.winPid2 = winPid1;
+			return ;
+		}
 		this.winPid1 = winPid1;
 	}
 	@Min(1)
@@ -71,6 +76,11 @@ public class Game {
 		return winPid2;
 	}
 	public void setWinPid2(int winPid2){
+		if (winPid2 < winPid1){
+			this.winPid2 = winPid1;
+			winPid1 = winPid2;
+			return ;
+		}
 		this.winPid2 = winPid2;
 	}
 	
@@ -89,7 +99,12 @@ public class Game {
 		return losePid1;
 	}
 	public void setLosePid1(int losePid1){
-		this.losePid1 = losePid1;
+		if(losePid1 > this.losePid2 && losePid2 != 0){
+			this.losePid1 = this.losePid2;
+			this.losePid2 = losePid1;
+			return ;
+		}
+		this.losePid1 =losePid1;
 	}
 	@Min(1)
 	@Column(name="losepid2")
@@ -97,6 +112,13 @@ public class Game {
 		return losePid2;
 	}
 	public void setLosePid2(int losePid2){
+		if (losePid2 < losePid1){
+			this.losePid2 = losePid1;
+			losePid1 = losePid2;
+			return ;
+		}
+		
+		
 		this.losePid2 = losePid2;
 	}
 	

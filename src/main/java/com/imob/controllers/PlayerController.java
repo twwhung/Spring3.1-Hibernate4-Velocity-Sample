@@ -1,9 +1,10 @@
 package com.imob.controllers;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.imob.domains.Player;
+
 import com.imob.services.PlayerService;
 
 @Controller
@@ -29,11 +32,11 @@ public class PlayerController extends BasicController{
 	private PlayerService playerService;
 	
 	@RequestMapping(value = "/players.show", method = RequestMethod.GET)
-	public String players(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {
+	public String players(Model model) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Player> memberList = playerService.listPlayers(gid);				
 		String membersJSONString = mapper.writeValueAsString(memberList);				
-		model.addAttribute("memberJSONList",membersJSONString);
+		model.addAttribute("memberJSONList",membersJSONString);				
 		return "players";
 	}	
 	@RequestMapping(value = "/addplayer", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")

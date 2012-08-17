@@ -1,4 +1,3 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/velocity/error.vm=UTF-8
-encoding//src/main/webapp/WEB-INF/velocity/list.vm=UTF-8
 encoding//src/main/webapp/WEB-INF/velocity/players.vm=UTF-8

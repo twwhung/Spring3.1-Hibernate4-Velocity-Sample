@@ -6,19 +6,24 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.imob.domains.Game;
 import com.imob.domains.Player;
+
 import com.imob.services.GameService;
 import com.imob.services.PlayerService;
 @Controller
@@ -41,27 +46,19 @@ public class RecordController extends BasicController{
 		
 		return "records";
 	}
-	
 	@RequestMapping(value = "/adddoublerecord", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> addDoubleRecord(@RequestParam("winpid1") int winPid1, @RequestParam("winpid2") int winPid2,
-			@RequestParam("winscore") int winScore, @RequestParam("losepid1") int losePid1, @RequestParam("losepid2") int losePid2,			
-			@RequestParam("losescore") int loseScore) {								
-		Map<String,Object> gameConfig = new HashMap<String,Object>();
-		gameConfig.put("gid",gid);
-		gameConfig.put("type", 0);
-		gameConfig.put("winpid1",winPid1);
-		gameConfig.put("winpid2",winPid2);
-		gameConfig.put("winscore",winScore);
-		gameConfig.put("losepid1",losePid1);
-		gameConfig.put("losepid2",losePid2);
-		gameConfig.put("losescore",loseScore);
-				
+	@ResponseBody public Map<String,Object> addDoubleRecord(Game game) {								
+		game.setGid(gid);
+		game.setType(0);
+		gameService.addGame(game);
+						
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("message", "ok");
-		result.put("value", gameService.addGame(gameConfig));
+		result.put("value", game);
+				
 		return result;				
-	}
+	}	
 	@RequestMapping(value = "/deleterecord", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> deleteRecord(@RequestParam("id") int id) {
 		gameService.deleteGame(id,gid);		

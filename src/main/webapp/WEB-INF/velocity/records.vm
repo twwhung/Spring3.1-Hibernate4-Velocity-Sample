@@ -7,19 +7,19 @@
 		<form id="frm_addrecord">			
 			<div class="frm_second_title">Winner</div>			
 			<div>				
-				#set($slctPlayersName="winpid1")
+				#set($slctPlayersName="winPid1")
 				<span> 隊員1: </span>#parse("\elements\slctplayers.vm")	
-				#set($slctPlayersName="winpid2")	
+				#set($slctPlayersName="winPid2")	
 				<span> 隊員2: </span>#parse("\elements\slctplayers.vm")		
-				<span> 分數: </span><input type="number" name="winscore" min="0" value="1"/>
+				<span> 分數: </span><input type="number" name="winScore" min="0" value="1"/>
 			</div>
 			<div class="frm_second_title">Loser</div>			
 			<div>				
-				#set($slctPlayersName="losepid1")
+				#set($slctPlayersName="losePid1")
 				<span> 隊員1: </span>#parse("\elements\slctplayers.vm")
-				#set($slctPlayersName="losepid2")
+				#set($slctPlayersName="losePid2")
 				<span> 隊員2: </span>#parse("\elements\slctplayers.vm")				
-				<span> 分數: </span><input type="number" name="losescore" min="0" value="0"/>
+				<span> 分數: </span><input type="number" name="loseScore" min="0" value="0"/>
 			</div>
 			<div class="right">
 				<span class="btn" id="btn_addrecord">Add new record</span>				

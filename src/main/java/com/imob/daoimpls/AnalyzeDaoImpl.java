@@ -21,8 +21,7 @@ public class AnalyzeDaoImpl extends BasicDaoImpl implements AnalyzeDao{
 			") AS TMP GROUP BY pid1, pid2";
 		Query query = getCurrentSession().createSQLQuery(sql)
 		.addEntity(PairSummary.class)
-		.setParameter("gid", gid);
-				
+		.setParameter("gid", gid);						
 		return query.list();
 	}
 
