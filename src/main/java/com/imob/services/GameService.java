@@ -20,7 +20,9 @@ import com.imob.domains.Game;
 public class GameService {
 	@Value("#{gameDaoImp1}")
 	private GameDaoImpl gameDaoImpl;
-	@CacheEvict(value= {"cacheGames", "cacheSingleSummarys","cachePairSummarys"}, key="'cacheGames'+ #gid")
+	
+	
+	@CacheEvict(value= {"cacheGames", "cacheSingleSummarys","cachePairSummarys"}, key="'cacheGames'+ #game.gid")
 	public void addGame(Game game){		
 		gameDaoImpl.addGame(game);		
 	}
