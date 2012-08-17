@@ -1,0 +1,1 @@
+It is a Sample within Spring3.1 + Hibernate4 + Velocity
