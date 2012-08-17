@@ -27,7 +27,7 @@ import com.imob.services.PlayerService;
 
 
 @Controller
-public class AnalyzeController extends BasicController{
+public class AnalyzeController {
 	private static final int gid = 1;
 	
 	@Value("#{analyzeService}")

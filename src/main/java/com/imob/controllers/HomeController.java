@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-public class HomeController extends BasicController{						
+public class HomeController {						
 	@RequestMapping(value="/", method={RequestMethod.GET})
 	public ModelAndView home() throws Exception {								
 		return new ModelAndView("forward:/analyzes.show");

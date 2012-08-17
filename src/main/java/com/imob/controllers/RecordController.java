@@ -27,7 +27,7 @@ import com.imob.domains.Player;
 import com.imob.services.GameService;
 import com.imob.services.PlayerService;
 @Controller
-public class RecordController extends BasicController{
+public class RecordController {
 	private static final int gid = 1;
 	@Value("#{playerService}")
 	private PlayerService playerService;

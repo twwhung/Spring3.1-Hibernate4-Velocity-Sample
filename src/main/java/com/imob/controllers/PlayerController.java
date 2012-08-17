@@ -24,7 +24,7 @@ import com.imob.domains.Player;
 import com.imob.services.PlayerService;
 
 @Controller
-public class PlayerController extends BasicController{
+public class PlayerController {
 	
 	private static final int gid = 1;
 	

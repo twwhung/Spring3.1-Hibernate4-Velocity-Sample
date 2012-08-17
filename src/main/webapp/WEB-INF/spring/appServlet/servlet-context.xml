@@ -11,6 +11,14 @@
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	
+	<beans:bean id="exceptionHandlerExceptionResolver" class="com.imob.commons.ExtendedExceptionHandlerExceptionResolver">
+		<beans:property name="exceptionHandler">
+		<!-- Registers Exception Handlers across all controllers -->
+		<beans:bean class="com.imob.controllers.ExceptionController"/>
+		</beans:property>
+		
+	</beans:bean>
+	
 	
 	<annotation-driven>
 	    <argument-resolvers>	
