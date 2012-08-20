@@ -58,15 +58,14 @@ public class PairSummary implements Serializable{
 	}
 	@Override
 	public boolean equals(Object arg0) {
-	if(arg0 == null) return false;
-	if(!(arg0 instanceof PairSummary)) return false;
-	PairSummary arg1 = (PairSummary) arg0;
-	return (String.valueOf(this.pid1) + "pair" + String.valueOf(this.pid2)).equals(
-			String.valueOf(arg1.getPid1()) + "pair" + String.valueOf(arg1.getPid2()));
+		if(arg0 == null) return false;
+		if(!(arg0 instanceof PairSummary)) return false;
+		PairSummary arg1 = (PairSummary) arg0;
+		return this.hashCode() == arg1.hashCode();
 	}
 	@Override
 	public int hashCode() {
-	return (String.valueOf(this.pid1) + "pair" + String.valueOf(this.pid2)).hashCode();
+		return (String.valueOf(this.pid1) + "pair" + String.valueOf(this.pid2)).hashCode();
 	}
 	
 	
