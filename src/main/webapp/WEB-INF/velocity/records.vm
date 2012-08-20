@@ -22,7 +22,7 @@
 				<span> 分數: </span><input type="number" name="loseScore" min="0" value="0"/>
 			</div>
 			<div class="right">
-				<span class="btn" id="btn_addrecord">Add new record</span>				
+				<span class="btn btn_submit" id="btn_addrecord">Add new record</span>				
 			</div>			
 		</form>
 	</fieldset>	
@@ -76,9 +76,14 @@
 				var oTable = tblGames.dataTable();
 				var nRow = $(this).closest("tr")[0];
 				var id = oTable.fnGetData(nRow).id;
-				$.post("./deleterecord",{
-					"id" : id
-				},"json").success(function(result){
+				$.ajax({
+					url: "./deleterecord",
+					type: "POST",
+					data:{
+						"id": id
+					},
+					dataType:"json"
+				}).done(function(result){
 					if(result.success){
 						oTable.fnDeleteRow(nRow);						
 					}else{
@@ -86,22 +91,30 @@
 					}			
 				}).fail(function(){
 					alert("error!!");
-				});		
+				});
+												
+				
 			};		
 		});
 		
 		$("#btn_addrecord").click(function(){
-			$.post("./adddoublerecord",$("#frm_addrecord").serializeArray(),"json").success(function(result){
+			$.ajax({
+				url: "./adddoublerecord",
+				type: "POST",
+				data:$("#frm_addrecord").serializeArray(),
+				dataType:"json"
+			}).done(function(result){
 				if(result.success){
 					var oTable = tblGames.dataTable();			 			 
 					oTable.fnAddData([result.value]);
 					oTable.fnSort( [ [0,'desc']] );	
 				}else{
 					alert("新增紀錄失敗!");
-				}			
+				}					
 			}).fail(function(){
 				alert("error!!");
-			});		
+			});
+																					
 		});	
 		$("#frm_addrecord select.slct_players").change(function(){
 			$("#frm_addrecord select.slct_players[value=" + this.value+ "]").not(this).val(-1);

@@ -33,6 +33,7 @@ public class PlayerController {
 	
 	@RequestMapping(value = "/players.show", method = RequestMethod.GET)
 	public String players(Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		
 		ObjectMapper mapper = new ObjectMapper();
 		List<Player> memberList = playerService.listPlayers(gid);				
 		String membersJSONString = mapper.writeValueAsString(memberList);				

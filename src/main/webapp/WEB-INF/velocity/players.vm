@@ -11,7 +11,7 @@
 		<form id="frm_addmember">
 			<span>Name: </span>
 			<input type="text" id="ipt_name"/>
-			<span class="btn" id="btn_addmember">Add</span>
+			<span class="btn btn_submit" id="btn_addmember">Add</span>
 		</form>
 	</fieldset>
 	
@@ -55,9 +55,14 @@
 			if (!curName){				
 				return ;
 			}
-			$.post("./addplayer",{
-				"name" : curName
-			},"json").done(function(result){				
+			$.ajax({
+				url: "./addplayer",
+				type: "POST",
+				data:{
+					"name" : curName
+				},
+				dataType:"json"
+			}).done(function(result){
 				if(result.success){
 					var oTable = tblMembers.dataTable();			 			 
 					oTable.fnAddData([result.value]);
@@ -66,8 +71,11 @@
 					alert("新增成員失敗!");
 				}					
 			}).fail(function(){
-				alert("Server error");
+				alert("error!!");
 			});
+			
+			
+									
 							
 		});		
 		function editRow(oTable, nRow){
@@ -79,10 +87,15 @@
 			var aData = oTable.fnGetData(nRow);						
 			var inputName = $.trim($("input.ipt_name",nRow).val());
 			if (aData.name != inputName){												
-				$.post("./updateplayer",{
-					"name" : inputName,
-					"id" : aData.id
-				},"json").done(function(result){				
+				$.ajax({
+					url: "./updateplayer",
+					type: "POST",
+					data:{
+						"name" : inputName,
+						"id" : aData.id
+					},
+					dataType:"json"
+				}).done(function(result){
 					if(result.success){
 						aData.name = inputName;							
 					}else{
@@ -90,10 +103,11 @@
 					}					
 				}).fail(function(){
 					alert("Server error");
-				}).complete(function(){
+				}).always(function(){
 					oTable.fnUpdate(aData,nRow);
 					oTable.fnDraw();
-				});				
+				});
+			
 			}else{
 				oTable.fnUpdate(aData,nRow);
 				oTable.fnDraw();				
