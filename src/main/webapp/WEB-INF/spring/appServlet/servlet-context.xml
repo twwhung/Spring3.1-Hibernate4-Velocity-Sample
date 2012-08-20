@@ -15,10 +15,14 @@
 		<beans:property name="exceptionHandler">
 		<!-- Registers Exception Handlers across all controllers -->
 		<beans:bean class="com.imob.controllers.ExceptionController"/>
-		</beans:property>
-		
+		</beans:property>		
 	</beans:bean>
+	<beans:bean id="multipartResolver"
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	
+	    <!-- one of the properties available; the maximum file size in bytes -->
+	    <beans:property name="maxUploadSize" value="100000"/>
+	</beans:bean>
 	
 	<annotation-driven>
 	    <argument-resolvers>	

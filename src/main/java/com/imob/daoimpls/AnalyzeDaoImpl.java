@@ -16,7 +16,7 @@ public class AnalyzeDaoImpl extends BasicDaoImpl implements AnalyzeDao{
 	public List<PairSummary> listPairSummary(int gid) {
 		
 		String subSQL = "SELECT winpid1 AS pid1, winpid2 AS pid2, 1 AS win, 0 AS lose, winscore - losescore AS diff FROM games WHERE gid = :gid UNION ALL SELECT losepid1 AS pid1, losepid2 AS pid2, 0 AS win, 1 AS lose, losescore - winscore AS diff FROM games WHERE gid = :gid ";
-		String sql = "SELECT concat( pid1, concat( 'pair', pid2 ) ) AS pair,pid1, pid2, SUM( win ) AS wincount, SUM( lose ) AS losecount, TRUNCATE(AVG( diff ),1) AS avgdiff FROM (" 
+		String sql = "SELECT pid1, pid2, SUM( win ) AS wincount, SUM( lose ) AS losecount, TRUNCATE(AVG( diff ),1) AS avgdiff FROM (" 
 			+ subSQL + 
 			") AS TMP GROUP BY pid1, pid2";
 		Query query = getCurrentSession().createSQLQuery(sql)

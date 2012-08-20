@@ -1,11 +1,21 @@
 package com.imob.domains;
+import java.io.Serializable;
+
 import javax.persistence.*;
+
+
 @Entity
 @Table(name="players")
-public class Player {
+public class Player implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6552668997933529188L;
 	private int id;
 	private int gid;
 	private String name;
+
+	
 	
 	@Id
 	@GeneratedValue
@@ -30,4 +40,6 @@ public class Player {
 	public void setName(String n){
 		name = n;
 	}		
+	
+	
 }

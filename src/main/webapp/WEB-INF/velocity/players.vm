@@ -24,11 +24,15 @@
 #[[ 	
 	$(function(){
 		var tblMembers = $("#tbl_members");		
+		var curRow = null;
 		tblMembers.dataTable({
 			"aaData": members, 
 			"aoColumns":[				
-				{"sTitle" : "Player ID","mDataProp":"id"},
-				{"sTitle" : "Name" ,"mDataProp":"name","sClass" : "td_name"},
+				{"sTitle" : "Player ID","mData":"id"},
+				{"sTitle" : "Photo","mData":function(data){
+					return '<img src="./resources/images/' + data.id + '.jpg" class="player" />'	
+				},"sClass" : "td_photo"},
+				{"sTitle" : "Name" ,"mData":"name","sClass" : "td_name"},
 				{"sTitle" : "Edit", "sDefaultContent": "<span class='btn edit'>Edit</span>" ,"sClass" : "td_edit"}
 			],
 			"bLengthChange" : false,
@@ -49,6 +53,24 @@
 			}else if(tmp.is(".save")){
 				saveRow(oTable, nRow);				
 			}						
+		}).on("change","input.ipt_upload",function(){
+			var oTable = tblMembers.dataTable();	
+			var tmp = $(this);
+			var nRow = tmp.closest("tr")[0];						
+			var formData = new FormData($(this).closest("form")[0]);
+			$.ajax({
+		        url: "./uploadimage", 
+		        type: 'POST',		               		       
+		        data: formData,		       
+		        cache: false,
+		        contentType: false,
+		        processData: false
+		    }).fail(function(){
+		    	alert("上傳檔案失敗");
+		    }).always(function(){
+		    	oTable.fnUpdate(oTable.fnGetData(nRow),nRow)
+		    	.fnDraw();				
+		    });
 		});
 		$("#btn_addmember").click(function(){
 			var curName = $("#ipt_name").val();
@@ -79,9 +101,18 @@
 							
 		});		
 		function editRow(oTable, nRow){
+			if (curRow){
+				oTable.fnUpdate(oTable.fnGetData(curRow),curRow);
+				oTable.fnDraw();
+			}
+			curRow = nRow;			
+			
 			var aData = oTable.fnGetData(nRow);
 			$(nRow).find("td.td_name").html('<input type="text" class="ipt_name" value="'+ aData.name +'">')
-			.siblings("td.td_edit").html("<span class='btn save'>save</span>");					
+			.siblings("td.td_edit").html("<span class='btn save'>Save</span>")	
+			.siblings("td.td_photo").html('<form enctype="multipart/form-data">' + 
+					'<input name="file" type="file" class="ipt_upload"/>' + 
+					'<input style="display:none;" name="id" value="'+ aData.id + '"/></form>');
 		}
 		function saveRow(oTable, nRow){
 			var aData = oTable.fnGetData(nRow);						
