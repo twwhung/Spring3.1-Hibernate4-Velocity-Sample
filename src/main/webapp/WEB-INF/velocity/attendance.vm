@@ -1,0 +1,102 @@
+<div class="page_box">
+	<div class="content_title">出席紀錄</div>
+	<fieldset class="fld_frm">
+		<legend>
+			新增修改紀錄
+		</legend>
+		<form id="frm_save">			
+			<div class="frm_second_title">出席狀況</div>	
+			<div>
+				<span> 日期: </span><input type="date" name="date"><span> Example: 2012/08/10, 2012-08-10 </span>				
+			</div>					
+			<div>
+				<span> 遲到分鐘: </span><input type="number" name="late" value="0" min="0">
+			</div>
+			<div class="frm_second_title">出席人員</div>	
+			<div>
+				#foreach($p in $playerList)
+					<label>
+						<input value="$p.id" type="checkbox" name="uid"/>	
+						$esc.html($p.name)	&nbsp;	
+					</label>			
+				#end		
+			</div>
+			<div class="right">
+				<span class="btn btn_submit" id="btn_save">Save</span>				
+			</div>				
+		</form>
+	</fieldset>
+	<fieldset class="fld_frm">
+		<legend>
+			刪除紀錄
+		</legend>
+		<form id="frm_delete">
+			<span> 日期: </span><input type="date" name="date">
+			#set($slctPlayersName="pid")
+			<span> 人員: </span>#parse("\elements\slctplayers.vm")
+			<span class="btn btn_submit" id="btn_delete">Delete</span>				
+		</form>
+	</fieldset>	
+	<table id="tbl_summary" >		
+	
+	</table>	
+</div>
+
+<script>
+	## $pairSummaryJSONList is a model attribute	
+	var attendSummarys = $attendanceSummaryJSONList;
+	
+	$(function(){
+		var tblMembers = $("#tbl_summary");
+		tblMembers.dataTable({
+			"aaData": attendSummarys, 
+			"aoColumns":[				
+				{"sTitle" : "Date","mData":"date" , "sWidth": "30%"},
+				{"sTitle" : "Total","mData":"total", "sWidth": "20%"},
+				{"sTitle" : "Info","mData":"info"}				
+			],
+			"bLengthChange" : false,
+			"bAutoWidth": true,
+			"iDisplayLength": 20,
+			"oLanguage":{
+				"sInfo": "第_START_至_END_次活動，總計_TOTAL_次活動",
+				"sInfoFiltered": "全部_MAX_次活動",
+				"sInfoEmpty": "條件內無活動"
+			}
+		});	
+		
+		$("#btn_save").click(function(){
+			$.ajax({
+				url: "./saveattendance",
+				type: "POST",
+				data:$("#frm_save").serializeArray(),
+				dataType:"json"
+			}).done(function(result){
+				if(result.success){
+					alert(result.message);
+				}else{
+					alert(result.message);
+				}					
+			}).fail(function(){
+				alert("error!!");
+			});
+		});	
+		$("#btn_delete").click(function(){
+			$.ajax({
+				url: "./deleteattendance",
+				type: "POST",
+				data:$("#frm_delete").serializeArray(),
+				dataType:"json"
+			}).done(function(result){
+				if(result.success){
+					alert(result.message);
+				}else{
+					alert(result.message);
+				}					
+			}).fail(function(){
+				alert("error!!");
+			});
+		});	
+
+	});	
+</script>

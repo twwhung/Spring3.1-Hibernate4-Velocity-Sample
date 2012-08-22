@@ -25,12 +25,13 @@
 	$(function(){
 		var tblMembers = $("#tbl_members");		
 		var curRow = null;
+		var creatImgTag = badminton._createImgTag();
 		tblMembers.dataTable({
 			"aaData": members, 
 			"aoColumns":[				
 				{"sTitle" : "Player ID","mData":"id"},
 				{"sTitle" : "Photo","mData":function(data){
-					return '<img src="./resources/images/' + data.id + '.jpg" class="player" />'	
+					return creatImgTag(data.id);	
 				},"sClass" : "td_photo"},
 				{"sTitle" : "Name" ,"mData":"name","sClass" : "td_name"},
 				{"sTitle" : "Edit", "sDefaultContent": "<span class='btn edit'>Edit</span>" ,"sClass" : "td_edit"}
@@ -95,10 +96,7 @@
 			}).fail(function(){
 				alert("error!!");
 			});
-			
-			
-									
-							
+																					
 		});		
 		function editRow(oTable, nRow){
 			if (curRow){

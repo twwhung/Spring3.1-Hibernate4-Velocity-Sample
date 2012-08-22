@@ -6,18 +6,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@SuppressWarnings("serial")
+
 @Entity
 public class PairSummary implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7365364399967294725L;
 	private int pid1;
 	private int pid2;
 	private int winCount;
 	private int loseCount;
 	private double avgDiff;
 		
-	
-	
+		
 	
 	@Id
 	@Column(name="pid1")

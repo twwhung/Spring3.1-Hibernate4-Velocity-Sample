@@ -2,5 +2,6 @@
 <ul id="menu_header" class="left">
 	<li><a href="./analyzes.show">戰績表</a></li>
 	<li><a href="./records.show">紀錄管理</a></li>
-	<li><a href="./players.show">成員管理</a></li>	       
+	<li><a href="./players.show">成員管理</a></li>
+	<li><a href="./attendance.show">出席紀錄</a></li>		       
 </ul>

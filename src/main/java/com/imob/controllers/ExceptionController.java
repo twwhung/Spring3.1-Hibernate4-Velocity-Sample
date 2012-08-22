@@ -26,11 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ExceptionController {			
+	
 	@ExceptionHandler(HibernateOptimisticLockingFailureException.class)
 	public ModelAndView hibernateExceptionHandler(HttpServletRequest request, HibernateOptimisticLockingFailureException ex) {											
-
 		return handleErrorMav(request,"Unexpected DB error");
-	}		
+	}	
+	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ModelAndView validateExceptionHandler(HttpServletRequest request, ConstraintViolationException ex) {											
 		return handleErrorMav(request,"Validation error");

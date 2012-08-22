@@ -11,7 +11,7 @@
 				<span> 隊員1: </span>#parse("\elements\slctplayers.vm")	
 				#set($slctPlayersName="winPid2")	
 				<span> 隊員2: </span>#parse("\elements\slctplayers.vm")		
-				<span> 分數: </span><input type="number" name="winScore" min="0" value="1"/>
+				<span> 分數: </span><input type="number" name="winScore" min="0" value="21"/>
 			</div>
 			<div class="frm_second_title">Loser</div>			
 			<div>				

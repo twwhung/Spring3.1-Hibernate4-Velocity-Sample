@@ -9,4 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ActiveGroup {}
+public @interface BeanList {
+	String base();
+	
+}
