@@ -1,6 +1,7 @@
 package com.imob.controllers;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -51,7 +53,7 @@ public class AttendanceController {
 	}
 	
 	@RequestMapping(value = "/saveattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> saveAttendance(@BeanList(base="uid") ArrayList<Attendance> aList) {				
+	@ResponseBody public Map<String,Object> saveAttendance(@BeanList(base="pid") ArrayList<Attendance> aList) {				
 		for (Attendance attendance:aList){
 			attendance.setGid(gid);
 		}		
@@ -62,8 +64,8 @@ public class AttendanceController {
 		return result;				
 	}
 	@RequestMapping(value = "/deleteattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> deleteAttendance(Attendance attendance) {						
-		//attendanceService.deleteAttendance(attendance);
+	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") String date, @RequestParam("pid") int pid) throws ParseException {						
+		attendanceService.deleteAttendance(gid,pid,date);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("message", "ok");		

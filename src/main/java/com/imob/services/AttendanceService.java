@@ -1,6 +1,7 @@
 package com.imob.services;
 
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class AttendanceService {
 	public List<AttendanceSummary>listSummary(int gid){
 		return attendanceDaoImp1.listSummary(gid);
 	}
-	public void deleteAttendance(int gid,int pid,String dateString){
+	public void deleteAttendance(int gid,int pid,String dateString) throws ParseException{
 		attendanceDaoImp1.deleteAttendance(gid,pid,dateString);
 	}
 }

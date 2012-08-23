@@ -16,7 +16,7 @@
 			<div>
 				#foreach($p in $playerList)
 					<label>
-						<input value="$p.id" type="checkbox" name="uid"/>	
+						<input value="$p.id" type="checkbox" name="pid"/>	
 						$esc.html($p.name)	&nbsp;	
 					</label>			
 				#end		
@@ -38,14 +38,14 @@
 		</form>
 	</fieldset>	
 	<table id="tbl_summary" >		
-	
+
 	</table>	
 </div>
 
 <script>
 	## $pairSummaryJSONList is a model attribute	
 	var attendSummarys = $attendanceSummaryJSONList;
-	
+
 	$(function(){
 		var tblMembers = $("#tbl_summary");
 		tblMembers.dataTable({
@@ -64,7 +64,7 @@
 				"sInfoEmpty": "條件內無活動"
 			}
 		});	
-		
+
 		$("#btn_save").click(function(){
 			$.ajax({
 				url: "./saveattendance",
