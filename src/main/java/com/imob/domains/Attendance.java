@@ -1,6 +1,8 @@
 package com.imob.domains;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,7 +25,19 @@ public class Attendance implements Serializable{
 	private int pid;
 	private int gid;
 	private int late;
-	
+	public static Date buildDate(String dateString){
+		try{
+			return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+		}catch(Exception e){
+			try {
+				return  new SimpleDateFormat("yyyy/MM/dd").parse(dateString);
+			} catch (ParseException e1) {
+				return null;
+			}
+		}
+		
+		
+	}
 	@Id
 	@Column(name="date")
 	@Type(type="date")
@@ -74,4 +88,6 @@ public class Attendance implements Serializable{
 		}
 		return this.date.hashCode()* 1000000 + this.pid;
 	}
+	
+	
 }

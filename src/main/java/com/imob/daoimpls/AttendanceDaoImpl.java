@@ -1,7 +1,7 @@
 package com.imob.daoimpls;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class AttendanceDaoImpl  extends BasicDaoImpl implements AttendanceDao{
 	@Override
 	public List<AttendanceSummary> listSummary(int gid) {
 		
-		String sql = "SELECT date , count(*) as total, GROUP_CONCAT(IF(late > 0 , CONCAT(name,CONCAT('(' , CONCAT(late,')'))),CONCAT(name,'(皞�)') ) SEPARATOR ' ') as info FROM  attendance as a Inner JOIN players as p ON a.pid = p.id AND a.gid = :gid GROUP BY date";
+		String sql = "SELECT date , count(*) as total, GROUP_CONCAT(IF(late > 0 , CONCAT(name,CONCAT('(' , CONCAT(late,')'))),CONCAT(name,'(準時)') ) SEPARATOR ' ') as info FROM  attendance as a Inner JOIN players as p ON a.pid = p.id AND a.gid = :gid GROUP BY date";
 		Query query = getCurrentSession().createSQLQuery(sql)
 		.addEntity(AttendanceSummary.class)
 		.setParameter("gid", gid);
@@ -38,13 +38,8 @@ public class AttendanceDaoImpl  extends BasicDaoImpl implements AttendanceDao{
 	}
 
 	@Override
-	public void deleteAttendance(int gid, int pid, String dateString) throws ParseException {
-		Date date = null ;
-		try{
-			date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-		}catch(Exception e){
-			date = new SimpleDateFormat("yyyy/MM/dd").parse(dateString);
-		}
+	public void deleteAttendance(int gid, int pid, Date date) throws ParseException {
+		
 		
 		
 		Query query = getCurrentSession().createSQLQuery("delete from attendance where pid =:pid and gid=:gid and date =:date");

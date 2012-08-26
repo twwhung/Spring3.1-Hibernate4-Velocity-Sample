@@ -2,9 +2,11 @@ package com.imob.services;
 
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +24,11 @@ public class AttendanceService {
 	public void saveAttendance(List<Attendance> aList){								
 		attendanceDaoImp1.saveAttendance(aList);
 	}
+	
 	public List<AttendanceSummary>listSummary(int gid){
 		return attendanceDaoImp1.listSummary(gid);
 	}
-	public void deleteAttendance(int gid,int pid,String dateString) throws ParseException{
-		attendanceDaoImp1.deleteAttendance(gid,pid,dateString);
+	public void deleteAttendance(int gid,int pid,Date date) throws ParseException{
+		attendanceDaoImp1.deleteAttendance(gid,pid,date);
 	}
 }

@@ -2,7 +2,9 @@ package com.imob.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,33 +44,39 @@ public class AttendanceController {
 	public String attendance(Model model) throws JsonGenerationException, JsonMappingException, IOException{
 		List<Player> playerList = playerService.listPlayers(gid);
 		model.addAttribute("playerList", playerList);
-		
-		List<AttendanceSummary> attendanceSummaryList = attendanceService.listSummary(gid);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String attendanceSummaryJSONString = mapper.writeValueAsString(attendanceSummaryList);
-		model.addAttribute("attendanceSummaryJSONList", attendanceSummaryJSONString);
+		model.addAttribute("attendanceSummaryJSONList", buildAttendanceSummaryJSONString());
 		
 		return "attendance";
 	}
 	
 	@RequestMapping(value = "/saveattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> saveAttendance(@BeanList(base="pid") ArrayList<Attendance> aList) {				
+	@ResponseBody public Map<String,Object> saveAttendance(@BeanList(base="pid") ArrayList<Attendance> aList) throws JsonGenerationException, JsonMappingException, IOException {				
 		for (Attendance attendance:aList){
 			attendance.setGid(gid);
 		}		
 		attendanceService.saveAttendance(aList);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("message", "ok");		
+		result.put("message", "ok");	
+		result.put("value",attendanceService.listSummary(gid));
 		return result;				
 	}
 	@RequestMapping(value = "/deleteattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") String date, @RequestParam("pid") int pid) throws ParseException {						
-		attendanceService.deleteAttendance(gid,pid,date);
+	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") String date, @RequestParam("pid") int pid) throws ParseException, JsonGenerationException, JsonMappingException, IOException {						
+		Date deleteDate =Attendance.buildDate(date); 
+		attendanceService.deleteAttendance(gid,pid,deleteDate);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
-		result.put("message", "ok");		
+		result.put("message", "ok");
+		result.put("value", attendanceService.listSummary(gid));
 		return result;				
+	}
+	
+	private String buildAttendanceSummaryJSONString() throws JsonGenerationException, JsonMappingException, IOException{
+		List<AttendanceSummary> attendanceSummaryList = attendanceService.listSummary(gid);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(attendanceSummaryList);
+		
 	}
 }
