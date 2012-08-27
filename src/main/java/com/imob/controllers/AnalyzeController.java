@@ -47,8 +47,7 @@ public class AnalyzeController {
 		//ObjectMapper mapper = new ObjectMapper();
 		String singleSummaryJSONString = mapper.writeValueAsString(singleSummaryList);
 		model.addAttribute("singleSummaryJSONList", singleSummaryJSONString);
-		
-		
+				
 		List<Player> playerList = playerService.listPlayers(gid);
 		model.addAttribute("playerList", playerList);
 		return "analyzes";

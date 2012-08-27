@@ -6,13 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import com.imob.daoimpls.AttendanceDaoImpl;
 import com.imob.domains.Attendance;
+import com.imob.domains.AttendanceStat;
 import com.imob.domains.AttendanceSummary;
 
 
@@ -30,5 +31,9 @@ public class AttendanceService {
 	}
 	public void deleteAttendance(int gid,int pid,Date date) throws ParseException{
 		attendanceDaoImp1.deleteAttendance(gid,pid,date);
+	}
+	
+	public List<AttendanceStat> listStat(int gid){
+		return attendanceDaoImp1.listStat(gid);
 	}
 }

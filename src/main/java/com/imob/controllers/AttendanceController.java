@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.imob.commons.BeanList;
 import com.imob.domains.Attendance;
+import com.imob.domains.AttendanceStat;
 import com.imob.domains.AttendanceSummary;
 
 import com.imob.domains.Player;
@@ -44,9 +45,15 @@ public class AttendanceController {
 	public String attendance(Model model) throws JsonGenerationException, JsonMappingException, IOException{
 		List<Player> playerList = playerService.listPlayers(gid);
 		model.addAttribute("playerList", playerList);
-		model.addAttribute("attendanceSummaryJSONList", buildAttendanceSummaryJSONString());
-		
+		model.addAttribute("attendanceSummaryJSONList", buildAttendanceSummaryJSONString());		
 		return "attendance";
+	}
+	@RequestMapping(value = "/attendance_stat.show", method = RequestMethod.GET)
+	public String attendanceStat(Model model) throws JsonGenerationException, JsonMappingException, IOException{
+		List<AttendanceStat> attendanceStatList = attendanceService.listStat(gid);
+		ObjectMapper mapper = new ObjectMapper();		
+		model.addAttribute("attendanceStatJSONList", mapper.writeValueAsString(attendanceStatList));
+		return "attendance_stat";
 	}
 	
 	@RequestMapping(value = "/saveattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")

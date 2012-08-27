@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.imob.daos.AttendanceDao;
 
 import com.imob.domains.Attendance;
+import com.imob.domains.AttendanceStat;
 import com.imob.domains.AttendanceSummary;
 
 @Repository("attendanceDaoImp1")
@@ -47,6 +48,17 @@ public class AttendanceDaoImpl  extends BasicDaoImpl implements AttendanceDao{
 		query.setParameter("gid", gid);
 		query.setParameter("date", date);		
 		query.executeUpdate();		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AttendanceStat> listStat(int gid) {
+		String sql = "Select a.*, players.name FROM (SELECT pid, TRUNCATE( AVG( late ) , 1 ) AS avglate, SUM( late ) AS sumlate, COUNT( * ) AS count FROM attendance WHERE gid =:gid GROUP BY pid ) as a INNER JOIN players ON pid = id ";
+		Query query = getCurrentSession().createSQLQuery(sql)
+		.addEntity(AttendanceStat.class)
+		.setParameter("gid", gid);
+				
+		return query.list();
 	}
 
 }
