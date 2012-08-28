@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.imob.daos.AttendanceDao;
 
 import com.imob.domains.Attendance;
-import com.imob.domains.AttendanceStat;
+
 import com.imob.domains.AttendanceSummary;
 
 @Repository("attendanceDaoImp1")
@@ -39,10 +39,7 @@ public class AttendanceDaoImpl  extends BasicDaoImpl implements AttendanceDao{
 	}
 
 	@Override
-	public void deleteAttendance(int gid, int pid, Date date) throws ParseException {
-		
-		
-		
+	public void deleteAttendance(int gid, int pid, Date date) throws ParseException {						
 		Query query = getCurrentSession().createSQLQuery("delete from attendance where pid =:pid and gid=:gid and date =:date");
 		query.setParameter("pid", pid);
 		query.setParameter("gid", gid);
@@ -50,15 +47,6 @@ public class AttendanceDaoImpl  extends BasicDaoImpl implements AttendanceDao{
 		query.executeUpdate();		
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<AttendanceStat> listStat(int gid) {
-		String sql = "Select a.*, players.name FROM (SELECT pid, TRUNCATE( AVG( late ) , 1 ) AS avglate, SUM( late ) AS sumlate, COUNT( * ) AS count FROM attendance WHERE gid =:gid GROUP BY pid ) as a INNER JOIN players ON pid = id ";
-		Query query = getCurrentSession().createSQLQuery(sql)
-		.addEntity(AttendanceStat.class)
-		.setParameter("gid", gid);
-				
-		return query.list();
-	}
+	
 
 }

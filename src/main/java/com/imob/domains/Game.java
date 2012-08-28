@@ -1,11 +1,15 @@
 package com.imob.domains;
 
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 
 import org.hibernate.validator.constraints.Range;
@@ -27,6 +31,7 @@ public class Game {
 	private int type;
 	private int winPid1;
 	private int winPid2;
+	private Date date;
 	
 	private int winScore;
 	private int losePid1;
@@ -135,5 +140,14 @@ public class Game {
 			return false;			
 		}		
 		return true;
-	}			
+	}		
+	
+	@Column
+	@NotNull
+	public Date getDate(){
+		return date;
+	}
+	public void setDate(Date date){
+		this.date = date;
+	}		
 }

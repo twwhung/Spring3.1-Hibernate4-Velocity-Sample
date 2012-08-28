@@ -34,9 +34,7 @@ public class Attendance implements Serializable{
 			} catch (ParseException e1) {
 				return null;
 			}
-		}
-		
-		
+		}				
 	}
 	@Id
 	@Column(name="date")

@@ -1,6 +1,8 @@
 package com.imob.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,9 +14,12 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +38,14 @@ public class RecordController {
 	private PlayerService playerService;
 	@Value("#{gameService}")
 	private GameService gameService;
+	
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {       
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	    		new SimpleDateFormat("yyyy/MM/dd"), false));
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	    		new SimpleDateFormat("yyyy-MM-dd"), false));	
+    }
 	
 	@RequestMapping(value = "/records.show", method = RequestMethod.GET)
 	public String players(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {

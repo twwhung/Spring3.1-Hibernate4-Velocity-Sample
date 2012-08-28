@@ -10,7 +10,7 @@ public class AttendanceStat {
 	private double avglate;
 	private int sumlate;
 	private int count;
-	private String name;
+	
 	
 	@Id	
 	public int getPid(){		
@@ -19,13 +19,7 @@ public class AttendanceStat {
 	public void setPid(int pid){
 		this.pid = pid;
 	}		
-	@Column
-	public String getName(){
-		return name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+	
 	@Column
 	public double getAvglate(){
 		return avglate;

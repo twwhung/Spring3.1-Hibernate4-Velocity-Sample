@@ -5,6 +5,9 @@
 			新增紀錄
 		</legend>
 		<form id="frm_addrecord">			
+			<div>
+				<span> 日期: </span><input type="date" name="date"  />
+			</div>
 			<div class="frm_second_title">Winner</div>			
 			<div>				
 				#set($slctPlayersName="winPid1")
@@ -45,7 +48,10 @@
 		tblGames.dataTable({
 			"aaData": games, 
 			"aoColumns":[				
-				{"sTitle" : "Game","mDataProp":"id"},
+				{"sTitle" : "日期","sWidth": "15%","mData":'date',"mRender":function(unixtime){					
+					var date = new Date(unixtime );
+					return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+				}},
 				{"sTitle" : "Winner1" ,"mData":'winPid1',"mRender":function(id){					
 					return users[id];
 				}},

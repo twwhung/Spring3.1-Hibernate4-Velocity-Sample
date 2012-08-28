@@ -25,10 +25,12 @@ public class GameDaoImpl extends BasicDaoImpl implements GameDao{
 	}
 	@Override
 	public void deleteGame(int id,int gid){
+		
 		Query query = getCurrentSession().createQuery("delete from Game where id =:id and gid=:gid");
 		query.setParameter("id", id);
 		query.setParameter("gid", gid);
 		query.executeUpdate();
+				
 	}	
 	@SuppressWarnings("unchecked")
 	public List<Game> listGame(int gid) {

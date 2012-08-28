@@ -1,75 +1,243 @@
 <div class="page_box">
-	<div class="content_title">戰績表</div>	
+	<div class="content_title">統計分析</div>	
 	<hr/>
-	<div class="frm_second_title">搭檔累積</div>	
-	<table id="tbl_tables" >		
-	</table>
+	<div class="frm_second_title">個人分析</div>
+	<div id="slct_player_container">
+		#set($slctPlayersName="pid")
+		<span> 選擇玩家: </span>#parse("\elements\slctplayers.vm")	
+	</div>
+	<br/>
+	<div id="box_single">
+								
+		
+		<div class="left" id="box_single_img"></div>
+		<div class="left " id="name_single"></div>
+		
+		<div class="enter" id="details_single">
+			<div class="item_single" id="winrate_single"></div>
+			<div class="item_single" id="attrate_single"></div>
+			<div class="item_single" id="avglate_single"></div>
+			<div class="item_single" id="bestteamate_single"></div>
+			<div class="item_single" id="worstteamate_single"></div>
+		</div>				
+		<div class="enter" id="cht_single"></div>
+	</div>
+	
+
 	<hr/>
-	<div class="frm_second_title enter">個人累積</div>
+	<div class="frm_second_title">出席比較</div>	
+	<div>
+		<label>
+			<input value="1" type="radio" name="r_chart" checked />
+			參加次數							
+		</label>	
+		<label>
+			<input value="2" type="radio" name="r_chart"/>
+			平均遲到時間						
+		</label>
+		<label>
+			<input value="3" type="radio" name="r_chart"/>
+			累計遲到時間						
+		</label>	
+	</div>	
+	<div id="cht_attendance"></div>
+	<hr/>
+	<div class="frm_second_title enter">個人戰績</div>
 	<table id="tbl_singletables" >		
 	</table>
+	<hr/>
+	<div class="frm_second_title">搭檔戰績</div>	
+	<table id="tbl_tables" >		
+	</table>
+	
 </div>
 
 <script>
+	
+	var attendanceStats = $attendanceStatJSONList;	
 	## $pairSummaryJSONList is a model attribute	
 	var pairSummarys = $pairSummaryJSONList;
 	
 	## $singleSummaryJSONList is a model attribute	
 	var singleSummarys = $singleSummaryJSONList;	
+		
 	
 	var users = {};
 	#foreach($p in $playerList)
 	users[$p.id] = '$p.name';	
 	#end
-	$(function(){
-		var tblTables = $("#tbl_tables");		
-		var tblSingleTables = $("#tbl_singletables");
-		tblTables.dataTable({
-			"aaData": pairSummarys, 
-			"aoColumns":[								
-				{"sTitle" : "搭檔" ,"sWidth": "35%", "mData":function(data){
-					return users[data.pid1] + " + " + users[data.pid2];
-				}},								
-				{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
-					return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
-				}},
-				{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
-				{"sTitle" : "敗場" ,"mData":"loseCount"},
-				{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
+	
+	
+	
+	google.load("visualization", "1", {packages:["corechart",'gauge']});    		
+	google.setOnLoadCallback(function(){		
+		var drawAttChart = function(){
+	    	var titleArr = ["dummy","參加次數(次)", "平均遲到時間(分)", "累計遲到時間(分)"];
+			var colorArr = ["dummy", "red", "green", "blue"];
+	    	var chartSource = [];
+			chartSource.push( ['Name','參加次數','平均遲到時間','累計遲到時間']);
+			$.each(attendanceStats,function(index,curData){
+				chartSource.push([users[curData.pid], curData.count, curData.avglate, curData.sumlate]);
+			});												
+			var options = {
+				colors : ["red"],
+				vAxis: {
+					viewWindow: {min: 0}			       
+			      }
+			};
+			var data = google.visualization.arrayToDataTable(chartSource);
+			var view = new google.visualization.DataView(data);
+			
+			var chart = new google.visualization.ColumnChart(document.getElementById('cht_attendance'));     						
+			return function(index){
+				view.setRows(data.getSortedRows([{column: index,desc: true}]));
+				view.setColumns([0,index]);
+				options.title = titleArr[index];
+				options.colors[0] = colorArr[index]; 
+				chart.draw(view,options); 												
+			};
+	    }();   
+	    var drawSingleChart = function(){
+	 		var options = {				
+				height: 240,width: $("#page_box").width(),
+	 			redFrom: 0, redTo: 40,
 				
-			],
-			"bLengthChange" : false,
-			"bAutoWidth": true,
-			"iDisplayLength": 20,
-			"oLanguage":{
-				"sInfo": "第_START_至_END_組，總計_TOTAL_組",
-				"sInfoFiltered": "全部_MAX_組",
-				"sInfoEmpty": "條件內無搭檔"
-			}
-		}).fnSort([[1,'desc']]);	;
-				
-		tblSingleTables.dataTable({
-			"aaData": singleSummarys, 
-			"aoColumns":[								
-				{"sTitle" : "玩家" ,"mData":'pid',"mRender":function(id){					
-					return users[id];
-				}},						
-				{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
-					return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
-				}},
-				{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
-				{"sTitle" : "敗場" ,"mData":"loseCount"},
-				{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
-				
-			],
-			"bLengthChange" : false,
-			"bAutoWidth": true,
-			"iDisplayLength": 20,
-			"oLanguage":{
-				"sInfo": "第_START_至_END_員，總計_TOTAL_人",
-				"sInfoFiltered": "全部_MAX_人",
-				"sInfoEmpty": "條件內無玩家"
-			}
-		}).fnSort([[1,'desc']]);	;
+				minorTicks: 5
+			};
+	 		var chart = new google.visualization.Gauge(document.getElementById('cht_single'));
+	    	return function(rawData){
+	    			    		
+	    		var dataGames = rawData.games;
+	    		
+	    		var valueGPD = Math.round(rawData.gpd * 100 / 8 );
+	    		var valueAttach = Math.round(dataGames.myscore * 100 / 21 / dataGames.total); 
+				var valueDeffense = Math.round( (1 - dataGames.counterscore / 21 / dataGames.total) * 100); 	    			    		
+	    		var valueLucky = Math.round(dataGames.wincount * 100 / dataGames.total);
+				var valueRoyalty = Math.round(rawData.attendance.per * 100 );
+				var valueCredit = Math.round((60 - rawData.attendance.avglate) / 60 * 100 );
+	    		
+				$("#winrate_single").html("勝率: " + valueLucky + "%");				
+				$("#attrate_single").html("出席率: " + valueRoyalty + "%");
+				$("#avglate_single").html("平均遲到: " + rawData.attendance.avglate + "分鐘");
+				$("#bestteamate_single").html("最佳隊友: " + users[rawData.teamate.bestpid] 
+					+ "(勝率: " + Math.round(rawData.teamate.bestper * 100) + "%)");
+				$("#worstteamate_single").html("最差隊友: " + users[rawData.teamate.worstpid] 
+				+ "(勝率: " + Math.round(rawData.teamate.worstper * 100) + "%)");
+				var data=[];
+	    		data.push(['Label', 'Value']);
+	    		
+	    		 
+	    		data.push(['幸運指數',valueLucky]);
+	    		data.push(['攻擊指數',valueAttach]);
+	    		data.push(['防禦指數',valueDeffense]);
+	    		data.push(['耐力指數',valueGPD]);	
+	    		data.push(['忠誠指數',valueRoyalty]);
+	    		data.push(['信用指數',valueCredit]);
+	    		
+	    		chart.draw(google.visualization.arrayToDataTable(data)
+	    				, options);
+	    	};
+	    }();
+		
+		
+		
+		
+    
+		$(function(){
+			drawAttChart(1);
+			$("#box_single").hide();
+			
+			var tblTables = $("#tbl_tables");		
+			var tblSingleTables = $("#tbl_singletables");
+			var creatImgTag = badminton._createImgTag();
+			tblTables.dataTable({
+				"aaData": pairSummarys, 
+				"aoColumns":[								
+					{"sTitle" : "搭檔" ,"sWidth": "35%", "mData":function(data){
+						return users[data.pid1] + " + " + users[data.pid2];
+					}},								
+					{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
+						return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
+					}},
+					{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
+					{"sTitle" : "敗場" ,"mData":"loseCount"},
+					{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
+					
+				],
+				"bLengthChange" : false,
+				"bAutoWidth": true,
+				"iDisplayLength": 20,
+				"oLanguage":{
+					"sInfo": "第_START_至_END_組，總計_TOTAL_組",
+					"sInfoFiltered": "全部_MAX_組",
+					"sInfoEmpty": "條件內無搭檔"
+				}
+			}).fnSort([[1,'desc']]);	
+			
+			tblSingleTables.dataTable({
+				"aaData": singleSummarys, 
+				"aoColumns":[								
+					{"sTitle" : "玩家" ,"mData":'pid',"mRender":function(id){					
+						return users[id];
+					}},						
+					{"sTitle" : "勝率" ,"aDataSort": [ 1, 2, 4 ],"mData":function(data){
+						return Math.floor(data.winCount * 100 / (data.winCount + data.loseCount))/100;
+					}},
+					{"sTitle" : "勝場" ,"aDataSort": [ 2, 1 ],"mData":"winCount"},
+					{"sTitle" : "敗場" ,"mData":"loseCount"},
+					{"sTitle" : "平均勝分差" ,"aDataSort": [4,1, 2 ],"mData":"avgDiff"}
+					
+				],
+				"bLengthChange" : false,
+				"bAutoWidth": true,
+				"iDisplayLength": 20,
+				"oLanguage":{
+					"sInfo": "第_START_至_END_員，總計_TOTAL_人",
+					"sInfoFiltered": "全部_MAX_人",
+					"sInfoEmpty": "條件內無玩家"
+				}
+			}).fnSort([[1,'desc']]);
+			
+			$("input[name=r_chart]").click(function(){		
+				drawAttChart(parseInt(this.value));						
+			});	
+			$("#slct_player_container select").change(function(){
+				$("#box_single").hide();
+				var pid = parseInt(this.value);				
+				if (pid == -1 ){
+					return ;
+				}				
+				$.ajax({
+					url: "./getsinglestat",
+					type: "POST",
+					data:{
+						"pid": pid
+					},
+					dataType:"json"
+				}).done(function(result){
+					if(result.success){																		
+						if(result.value.gpd && result.value.attendance){
+							$("#box_single_img").html(creatImgTag(pid));
+							$("#name_single").html(users[pid]);														
+							$("#box_single").show();	
+							drawSingleChart(result.value);	
+							
+							
+							return ;
+						}
+						alert("資料不足");
+					}else{
+						alert("oops!");
+					}			
+				}).fail(function(){
+					alert("oops");
+				});
+			});
+			
+		});
+	
 	});
+	
+	
+	
 </script>

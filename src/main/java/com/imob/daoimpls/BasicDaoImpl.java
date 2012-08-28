@@ -16,8 +16,7 @@ public class BasicDaoImpl implements BasicDao{
 	
 	@Value("#{imobSessionFactory}")
 	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;	
-		
+		this.sessionFactory = sessionFactory;			
 	}	
 	public Session getCurrentSession() { 		
 		return sessionFactory.getCurrentSession();

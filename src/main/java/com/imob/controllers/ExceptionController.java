@@ -31,7 +31,10 @@ public class ExceptionController {
 	public ModelAndView hibernateExceptionHandler(HttpServletRequest request, HibernateOptimisticLockingFailureException ex) {											
 		return handleErrorMav(request,"Unexpected DB error");
 	}	
-	
+	@ExceptionHandler(org.springframework.validation.BindException.class)
+	public ModelAndView bindExceptionHandler(HttpServletRequest request, Exception ex) {											
+		return handleErrorMav(request,"Validation error");
+	}	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ModelAndView validateExceptionHandler(HttpServletRequest request, ConstraintViolationException ex) {											
 		return handleErrorMav(request,"Validation error");

@@ -10,8 +10,10 @@
 	
 	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager" >  
 	    <property name="caches">  
-	        <set>  	            
+	        <set>  	   	                
+	            <bean p:name="cacheAttendanceSummarys" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />
 	            <bean p:name="cachePlayers" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />
+	            <bean p:name="cacheAttendance" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />
 	            <bean p:name="cacheGames" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />	
 	            <bean p:name="cacheSingleSummarys" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />	
 	            <bean p:name="cachePairSummarys" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" />	            		            
