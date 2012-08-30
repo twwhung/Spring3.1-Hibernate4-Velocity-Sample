@@ -52,7 +52,6 @@ public class HTMLMinifyFilter implements Filter {
             pattern.append(s);
         }
     }
- 
     static class ResponseWrapper extends HttpServletResponseWrapper {
         private CharArrayWriter output;
  

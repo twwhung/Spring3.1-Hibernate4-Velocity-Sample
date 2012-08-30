@@ -20,8 +20,7 @@ public class PlayerDaoImpl extends BasicDaoImpl implements PlayerDao{
 	}
 	@SuppressWarnings("unchecked")
 	public List<Player> listUser(int gid) {
-		
-		
+				
 		Query query = getCurrentSession().createQuery("from Player where gid =:gid"); 
 		query.setParameter("gid", gid);				
 		return query.list();
@@ -29,5 +28,11 @@ public class PlayerDaoImpl extends BasicDaoImpl implements PlayerDao{
 	public void updatePlayer(Player player) {
 		getCurrentSession().update(player);	
 	}
-	
+		
+	//Currently this function is only for Unit Test
+	public void deletePlayer(int id){
+		Query query = getCurrentSession().createQuery("delete from Player where id =:id ");
+		query.setParameter("id", id);		
+		query.executeUpdate();
+	}
 }

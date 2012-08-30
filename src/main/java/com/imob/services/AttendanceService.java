@@ -35,7 +35,5 @@ public class AttendanceService {
 	@CacheEvict(value= {"cacheAttendance", "cacheAttendanceSummarys"}, key="'cacheAttendance'+ #gid")
 	public void deleteAttendance(int gid,int pid,Date date) throws ParseException{
 		attendanceDaoImp1.deleteAttendance(gid,pid,date);
-	}
-	
-	
+	}	
 }

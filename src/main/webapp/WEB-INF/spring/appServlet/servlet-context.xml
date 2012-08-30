@@ -10,6 +10,12 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<interceptors>
+		<interceptor>
+	   		<mapping path="/*" />	  
+	   		<beans:bean class="com.imob.commons.IdentityInterceptor" />
+	  	</interceptor>	  
+	</interceptors>	  	
 	
 	<beans:bean id="exceptionHandlerExceptionResolver" class="com.imob.commons.ExtendedExceptionHandlerExceptionResolver">
 		<beans:property name="exceptionHandler">
@@ -23,8 +29,15 @@
 	    <!-- one of the properties available; the maximum file size in bytes -->
 	    <beans:property name="maxUploadSize" value="300000"/>
 	</beans:bean>
+	<beans:bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	    <beans:property name="converters">
+	        <beans:list>
+	            <beans:bean class="com.imob.commons.DateConverter"/>
+	        </beans:list>
+	    </beans:property>
+	</beans:bean>
 	
-	<annotation-driven>
+	<annotation-driven conversion-service="conversionService">
 	    <argument-resolvers>	
 	        <beans:bean class="com.imob.commons.BeanListArgumentResolver"/>	
 	    </argument-resolvers>

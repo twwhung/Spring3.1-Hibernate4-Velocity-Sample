@@ -4,16 +4,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -56,12 +56,8 @@ public class BeanListArgumentResolver implements HandlerMethodArgumentResolver{
 		Class commandClass = (Class)commandType;
 				
 		Object command = BeanUtils.instantiateClass(commandClass);
-		ServletRequestDataBinder binder = new ServletRequestDataBinder(command);
 		
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	    		new SimpleDateFormat("yyyy/MM/dd"), false));
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	    		new SimpleDateFormat("yyyy-MM-dd"), false));		
+		ServletRequestDataBinder binder = (ServletRequestDataBinder)binderFactory.createBinder(webRequest,command,command.toString()); 		
 		binder.bind(request);					
 		ArrayList aList = new ArrayList();								
 		

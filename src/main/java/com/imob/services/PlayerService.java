@@ -2,6 +2,7 @@ package com.imob.services;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,5 +37,10 @@ public class PlayerService {
 	@Cacheable(value= "cachePlayers", key="'cachePlayers'+ #gid")
 	public List<Player> listPlayers(int gid){
 		return playerDaoImpl.listUser(gid);
+	}
+
+	//Currently this function is only for Unit Test
+	public void deletePlayer(int id){
+		playerDaoImpl.deletePlayer(id);
 	}
 }

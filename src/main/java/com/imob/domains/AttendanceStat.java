@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
 @Entity
 public class AttendanceStat {
 	private int pid;
@@ -14,9 +15,13 @@ public class AttendanceStat {
 	
 	@Id	
 	public int getPid(){		
+		
 		return pid;
 	}
+	
 	public void setPid(int pid){
+		
+		
 		this.pid = pid;
 	}		
 	

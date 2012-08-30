@@ -64,9 +64,9 @@ public class AttendanceController {
 		return result;				
 	}
 	@RequestMapping(value = "/deleteattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
-	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") String date, @RequestParam("pid") int pid) throws ParseException, JsonGenerationException, JsonMappingException, IOException {						
-		Date deleteDate =Attendance.buildDate(date); 
-		attendanceService.deleteAttendance(gid,pid,deleteDate);
+	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") Date date, @RequestParam("pid") int pid) throws ParseException, JsonGenerationException, JsonMappingException, IOException {						
+		//Date deleteDate =Attendance.buildDate(date); 
+		attendanceService.deleteAttendance(gid,pid,date);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("message", "ok");

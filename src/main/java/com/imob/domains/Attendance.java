@@ -1,8 +1,7 @@
 package com.imob.domains;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,6 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+
 import org.springframework.validation.annotation.Validated;
 @Validated
 @Entity
@@ -25,22 +25,13 @@ public class Attendance implements Serializable{
 	private int pid;
 	private int gid;
 	private int late;
-	public static Date buildDate(String dateString){
-		try{
-			return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-		}catch(Exception e){
-			try {
-				return  new SimpleDateFormat("yyyy/MM/dd").parse(dateString);
-			} catch (ParseException e1) {
-				return null;
-			}
-		}				
-	}
+			
 	@Id
 	@Column(name="date")
 	@Type(type="date")
-	@NotNull
+	@NotNull	
 	public Date getDate(){
+		
 		return date;
 	}
 	public void setDate(Date date){

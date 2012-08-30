@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,7 @@ public class PlayerController {
 	
 	@Value("#{playerService}")
 	private PlayerService playerService;
+	
 	
 	@RequestMapping(value = "/players.show", method = RequestMethod.GET)
 	public String players(Model model) throws JsonGenerationException, JsonMappingException, IOException {
