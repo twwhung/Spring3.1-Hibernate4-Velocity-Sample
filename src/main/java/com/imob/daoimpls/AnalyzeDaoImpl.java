@@ -116,11 +116,11 @@ public class AnalyzeDaoImpl extends BasicDaoImpl implements AnalyzeDao{
 			return null;
 		}
 		Map<String, Object> TeamateMap = new HashMap<String, Object>();
-		Map<String, Object> bestMate = (Map<String, Object>) tmpList.get(0); 
+		Map<String, Object> bestMate = (Map<String, Object>) tmpList.get(tmpList.size()-1); 
 		TeamateMap.put("bestpid", bestMate.get("pid"));
 		TeamateMap.put("bestper", bestMate.get("per"));
 		
-		Map<String, Object> worstMate = (Map<String, Object>) tmpList.get(tmpList.size()-1); 
+		Map<String, Object> worstMate = (Map<String, Object>) tmpList.get(0); 
 		TeamateMap.put("worstpid", worstMate.get("pid"));
 		TeamateMap.put("worstper", worstMate.get("per"));
 		

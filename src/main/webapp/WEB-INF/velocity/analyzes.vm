@@ -7,13 +7,11 @@
 		<span> 選擇玩家: </span>#parse("\elements\slctplayers.vm")	
 	</div>
 	<br/>
-	<div id="box_single">
-								
-		
+	<div id="box_single">										
 		<div class="left" id="box_single_img"></div>
-		<div class="left " id="name_single"></div>
+		<div class="left" id="name_single"></div>
 		
-		<div class="enter" id="details_single">
+		<div class="enter " id="details_single">
 			<div class="item_single" id="winrate_single"></div>
 			<div class="item_single" id="attrate_single"></div>
 			<div class="item_single" id="avglate_single"></div>
@@ -53,7 +51,7 @@
 </div>
 
 <script>
-	
+	var curUserPid = $user;
 	var attendanceStats = $attendanceStatJSONList;	
 	## $pairSummaryJSONList is a model attribute	
 	var pairSummarys = $pairSummaryJSONList;
@@ -100,8 +98,7 @@
 	    var drawSingleChart = function(){
 	 		var options = {				
 				height: 240,width: $("#page_box").width(),
-	 			redFrom: 0, redTo: 40,
-				
+	 			redFrom: 0, redTo: 40,				
 				minorTicks: 5
 			};
 	 		var chart = new google.visualization.Gauge(document.getElementById('cht_single'));
@@ -202,9 +199,10 @@
 				drawAttChart(parseInt(this.value));						
 			});	
 			$("#slct_player_container select").change(function(){
-				$("#box_single").hide();
+				$("#details_single,#cht_single").hide();
 				var pid = parseInt(this.value);				
-				if (pid == -1 ){
+				if (pid <1 ){
+					$("#box_single").hide();	
 					return ;
 				}				
 				$.ajax({
@@ -216,16 +214,14 @@
 					dataType:"json"
 				}).done(function(result){
 					if(result.success){																		
-						if(result.value.gpd && result.value.attendance){
-							$("#box_single_img").html(creatImgTag(pid));
-							$("#name_single").html(users[pid]);														
-							$("#box_single").show();	
+						$("#box_single_img").html(creatImgTag(pid));
+						$("#name_single").html(users[pid]);	
+						$("#box_single").show();	
+						if(result.value.gpd && result.value.attendance){												
+							$("#details_single,#cht_single").show();
 							drawSingleChart(result.value);	
-							
-							
-							return ;
 						}
-						alert("資料不足");
+							
 					}else{
 						alert("oops!");
 					}			

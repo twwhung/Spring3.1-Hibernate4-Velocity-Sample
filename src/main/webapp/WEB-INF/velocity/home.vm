@@ -1,27 +1,27 @@
 <div class="page_box">
 	<div class="content_title">哪位英雄好漢?(點擊進入)</div>
-	<form id="frm_who" class="cansubmit">
-		<ul id="list_players">
-			<li data-pid="-1">
-				<div>
-					<img class="player" src="./resources/images/smile.png">				
-				</div>
-				<div>訪客</div>	
-			
-			</li>
-			#foreach($p in $playerList)
-			<li data-pid="${p.id}">				
-				<div>
-					<img class="player" src="./resources/images/${p.id}.jpg">				
-				</div>
-				<div>$esc.html(${p.name})</div>				
-			</li>			
-			#end
-		
-		</ul>
-		<input name="pid" id="ipt_pid" style="display:none;" />
 	
-	</form>
+	<ul id="list_players">
+		<li data-pid="-1">
+			<div>
+				<img class="player" src="./resources/images/smile.png">				
+			</div>
+			<div>訪客</div>	
+		
+		</li>
+		#foreach($p in $playerList)
+		<li data-pid="${p.id}">				
+			<div>
+				<img class="player" src="./resources/images/${p.id}.jpg">				
+			</div>
+			<div>$esc.html(${p.name})</div>				
+		</li>			
+		#end
+	
+	</ul>
+		
+	
+
 </div>
 
 
@@ -29,8 +29,19 @@
 <script>
 	$(function(){
 		$("#list_players").on("click","li",function(){
-			$("#ipt_pid").val($(this).data("pid"));
-			$("#frm_who").submit();
+			$.ajax({
+					url: "./login",
+					type: "GET",
+					data:{
+						"pid": $(this).data("pid")
+					},
+					dataType:"json"
+				}).done(function(){
+					document.location.href="./analyzes.show";
+				
+				});
+			
+			
 		});
 	});
 

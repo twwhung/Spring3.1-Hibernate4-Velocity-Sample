@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -44,8 +48,10 @@ public class AnalyzeController {
 	private PlayerService playerService;
 	
 	
-	@RequestMapping(value = "/analyzes.show", method = RequestMethod.GET)
-	public String players(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {
+	@RequestMapping(value = "/analyzes.show")
+	public String players(HttpSession session,Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		model.addAttribute("user", session.getAttribute("user") );
+		
 		List<AttendanceStat> attendanceStatList = analyzeService.listAttendanceSummary(gid);
 		ObjectMapper mapper = new ObjectMapper();		
 		model.addAttribute("attendanceStatJSONList", mapper.writeValueAsString(attendanceStatList));

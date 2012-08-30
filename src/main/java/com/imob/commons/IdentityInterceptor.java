@@ -10,11 +10,15 @@ public class IdentityInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, 
 			HttpServletResponse response, Object handler)
 		    throws Exception {	 			
-			/*
+			if(request.getServletPath().equals("/login")){
+				return true;
+			}
+		
+		
 			HttpSession session = request.getSession();			
-			if (session.getAttribute("user") == null && !request.getServletPath().equals("/whoami")){
-				response.sendRedirect("/badminton/whoami");				
-			}*/
+			if (session.getAttribute("user") == null && !request.getServletPath().equals("/whoami.show")){
+				response.sendRedirect("/badminton/whoami.show");				
+			}
 			return true;
 		}
 }
