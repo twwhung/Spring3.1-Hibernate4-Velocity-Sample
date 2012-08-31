@@ -9,7 +9,7 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
-	<!-- Enables the Spring MVC @Controller programming model -->
+	
 	<interceptors>
 		<interceptor>
 	   		<mapping path="/*" />	  
@@ -37,6 +37,7 @@
 	    </beans:property>
 	</beans:bean>
 	
+	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven conversion-service="conversionService">
 	    <argument-resolvers>	
 	        <beans:bean class="com.imob.commons.BeanListArgumentResolver"/>	

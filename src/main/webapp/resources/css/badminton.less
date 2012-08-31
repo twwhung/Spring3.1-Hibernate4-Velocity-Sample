@@ -132,7 +132,7 @@ html {
 
 }
 body{    
-    min-width: 1024px;
+    min-width: 500px;
     min-height:1px;      
     padding-bottom: 10px;          
               
@@ -159,6 +159,18 @@ input{
     font-family: @font_family!important;
     border: 1px @component_border_color solid;
     font-size:12px!important;       
+}
+#header{
+	width:90%;
+	
+}
+
+#box_hello{
+	height:40px;
+	span{
+		vertical-align:top;
+		font-weight:bold;
+	}
 }
 #header,#content,#footer{
 	padding:10px;	
@@ -199,6 +211,7 @@ div.page_box{
 fieldset.fld_frm{
 	padding:5px;
 	border: 2px solid gray;
+	border-radius:5px;
 	margin-bottom:10px;
 	legend{
 		font-size:16px;
@@ -277,6 +290,20 @@ span.btn{
 .item_single{
 	margin-top:10px;
 }
+#tbl_stats td{
+	text-align:center;
+}
+#dash_list>li{
+	width:800px;
+	display:inline-block;
+	vertical-align: top;   
+	margin-right:10px;
+	margin-bottom:10px;
+	border-radius:10px;
+	border:1px solid gray;
+	padding:5px;
+	min-height:250px;
+}
 
 /* ========================== attendance.vm ====================================*/
 
@@ -288,16 +315,14 @@ span.btn{
 	vertical-align:middle;
 }
 
-/* ========================== attendance_stat.vm ====================================*/
 
-#tbl_stats td{
-	text-align:center;
-}
+
+
 
 /* ========================== whoami.vm ====================================*/
 
 
-#list_players li{
+#list_players>li{
 	display:inline-block;
 	margin:40px; 
 	width:60px;

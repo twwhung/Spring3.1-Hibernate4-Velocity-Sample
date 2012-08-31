@@ -28,11 +28,17 @@ public class PlayerDaoImpl extends BasicDaoImpl implements PlayerDao{
 	public void updatePlayer(Player player) {
 		getCurrentSession().update(player);	
 	}
+	
 		
 	//Currently this function is only for Unit Test
 	public void deletePlayer(int id){
 		Query query = getCurrentSession().createQuery("delete from Player where id =:id ");
 		query.setParameter("id", id);		
 		query.executeUpdate();
+	}
+	@Override
+	public Player getPlayer(int id) {
+		
+		return (Player)getCurrentSession().get(Player.class, id);
 	}
 }

@@ -1,57 +1,64 @@
-<div class="page_box">
-	<div class="content_title">統計分析</div>	
-	<hr/>
-	<div class="frm_second_title">個人分析</div>
-	<div id="slct_player_container">
-		#set($slctPlayersName="pid")
-		<span> 選擇玩家: </span>#parse("\elements\slctplayers.vm")	
-	</div>
-	<br/>
-	<div id="box_single">										
-		<div class="left" id="box_single_img"></div>
-		<div class="left" id="name_single"></div>
+<div class="content_title">統計分析</div>	
+<ul id="dash_list">
+	<li>
 		
-		<div class="enter " id="details_single">
-			<div class="item_single" id="winrate_single"></div>
-			<div class="item_single" id="attrate_single"></div>
-			<div class="item_single" id="avglate_single"></div>
-			<div class="item_single" id="bestteamate_single"></div>
-			<div class="item_single" id="worstteamate_single"></div>
-		</div>				
-		<div class="enter" id="cht_single"></div>
-	</div>
+		<div class="frm_second_title">個人分析</div>
+		<div id="slct_player_container">
+			#set($slctPlayersName="pid")
+			<span> 選擇玩家: </span>#parse("\elements\slctplayers.vm")	
+		</div>
+		
+		<div id="box_single">										
+			<div class="left" id="box_single_img"></div>
+			<div class="left" id="name_single"></div>
+			
+			<div class="enter " id="details_single">
+				<div class="item_single" id="winrate_single"></div>
+				<div class="item_single" id="attrate_single"></div>
+				<div class="item_single" id="avglate_single"></div>
+				<div class="item_single" id="bestteamate_single"></div>
+				<div class="item_single" id="worstteamate_single"></div>
+			</div>				
+			<div class="enter" id="cht_single"></div>
+		</div>
 	
-
-	<hr/>
-	<div class="frm_second_title">出席比較</div>	
-	<div>
-		<label>
-			<input value="1" type="radio" name="r_chart" checked />
-			參加次數							
-		</label>	
-		<label>
-			<input value="2" type="radio" name="r_chart"/>
-			平均遲到時間						
-		</label>
-		<label>
-			<input value="3" type="radio" name="r_chart"/>
-			累計遲到時間						
-		</label>	
-	</div>	
-	<div id="cht_attendance"></div>
-	<hr/>
-	<div class="frm_second_title enter">個人戰績</div>
-	<table id="tbl_singletables" >		
-	</table>
-	<hr/>
-	<div class="frm_second_title">搭檔戰績</div>	
-	<table id="tbl_tables" >		
-	</table>
+	</li>
+	<li>
+		
+		<div class="frm_second_title">出席比較</div>	
+		<div>
+			<label>
+				<input value="1" type="radio" name="r_chart" checked />
+				參加次數							
+			</label>	
+			<label>
+				<input value="2" type="radio" name="r_chart"/>
+				平均遲到時間						
+			</label>
+			<label>
+				<input value="3" type="radio" name="r_chart"/>
+				累計遲到時間						
+			</label>	
+		</div>	
+		<div id="cht_attendance"></div>
 	
-</div>
+	</li>
+	<li>
+		
+		<div class="frm_second_title enter">個人戰績</div>
+		<table id="tbl_singletables" >		
+		</table>
+		
+	</li>
+	<li>
+		
+		<div class="frm_second_title">搭檔戰績</div>	
+		<table id="tbl_tables"></table>	
+	</li>
+</ul>
 
 <script>
-	var curUserPid = $user;
+	
 	var attendanceStats = $attendanceStatJSONList;	
 	## $pairSummaryJSONList is a model attribute	
 	var pairSummarys = $pairSummaryJSONList;

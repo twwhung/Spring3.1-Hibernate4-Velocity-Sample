@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+
 
 
 
@@ -49,8 +49,8 @@ public class AnalyzeController {
 	
 	
 	@RequestMapping(value = "/analyzes.show")
-	public String players(HttpSession session,Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {
-		model.addAttribute("user", session.getAttribute("user") );
+	public String players(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		
 		
 		List<AttendanceStat> attendanceStatList = analyzeService.listAttendanceSummary(gid);
 		ObjectMapper mapper = new ObjectMapper();		

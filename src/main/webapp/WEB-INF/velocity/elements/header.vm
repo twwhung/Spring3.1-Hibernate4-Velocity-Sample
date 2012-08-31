@@ -4,5 +4,17 @@
 	
 	<li><a href="./records.show">比賽紀錄管理</a></li>	
 	<li><a href="./attendance.show">出席紀錄管理</a></li>
-	<li><a href="./players.show">成員管理</a></li>		       
+	<li><a href="./players.show">成員管理</a></li>	
+	#if($user)
+	<li style="margin-left:50px;">
+		<div id="box_hello">
+			<span>HI!&nbsp;&nbsp;</span>			
+			<img class="player" src="./resources/images/${user.id}.jpg">
+			<span>$esc.html(${user.name})</span>	
+		</div>								
+	</li>	       
+	#end
 </ul>
+
+
+

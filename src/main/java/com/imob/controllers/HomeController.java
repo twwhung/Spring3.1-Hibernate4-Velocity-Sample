@@ -46,7 +46,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET})
 	@ResponseBody public Map<String,Object> login(HttpSession session,HttpServletResponse response,@RequestParam("pid") int pid) throws Exception {												
-		session.setAttribute("user", pid);		
+		session.setAttribute("user", playerService.getPlayer(pid));		
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("success", true);
 		result.put("message", "ok");	

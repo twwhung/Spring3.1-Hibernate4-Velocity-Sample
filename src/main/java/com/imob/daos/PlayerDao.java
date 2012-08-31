@@ -10,4 +10,5 @@ public interface PlayerDao {
 	public List<Player> listUser(int gid);	
 	//Currently this function is only for Unit Test
 	public void deletePlayer(int id);
+	public Player getPlayer(int id);
 }

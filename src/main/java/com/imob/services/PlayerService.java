@@ -43,4 +43,7 @@ public class PlayerService {
 	public void deletePlayer(int id){
 		playerDaoImpl.deletePlayer(id);
 	}
+	public Player getPlayer(int id){
+		return playerDaoImpl.getPlayer(id);
+	}
 }
