@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.util.HashMap;
+
 import java.util.List;
 
 import java.util.Map;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import com.imob.commons.Ajax;
 import com.imob.domains.Player;
 
 import com.imob.services.PlayerService;
@@ -73,26 +74,17 @@ public class PlayerController {
 			outputStream.close();			
 			inputStream.close();	
 		}		
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", success);
-		result.put("message", fileType);		
-		return result;						
+		
+		return success ? Ajax.buildSuccessResult() : Ajax.buildErrorResult("The type of files could only be .jpg");						
 	}
 	
 	@RequestMapping(value = "/addplayer", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> addPlayer(@RequestParam("name") String name) {		
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");
-		result.put("value", playerService.addPlayer(gid, name));
-		return result;				
+		return Ajax.buildSuccessResult(playerService.addPlayer(gid, name));				
 	}
 	@RequestMapping(value = "/updateplayer", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> updatePlayer(@RequestParam("id") int id,@RequestParam("name") String name) {
-		playerService.updatePlayer(id, gid, name);		
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");		
-		return result;				
+		playerService.updatePlayer(id, gid, name);			
+		return Ajax.buildSuccessResult();				
 	}
 }

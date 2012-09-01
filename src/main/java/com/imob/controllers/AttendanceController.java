@@ -5,7 +5,7 @@ import java.text.ParseException;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.imob.commons.Ajax;
 import com.imob.commons.BeanList;
 import com.imob.domains.Attendance;
 
@@ -57,21 +58,13 @@ public class AttendanceController {
 			attendance.setGid(gid);
 		}		
 		attendanceService.saveAttendance(aList,gid);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");	
-		result.put("value",attendanceService.listSummary(gid));
-		return result;				
+		return  Ajax.buildSuccessResult(attendanceService.listSummary(gid));						
 	}
 	@RequestMapping(value = "/deleteattendance", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> deleteAttendance(@RequestParam("date") Date date, @RequestParam("pid") int pid) throws ParseException, JsonGenerationException, JsonMappingException, IOException {						
 		//Date deleteDate =Attendance.buildDate(date); 
-		attendanceService.deleteAttendance(gid,pid,date);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");
-		result.put("value", attendanceService.listSummary(gid));
-		return result;				
+		attendanceService.deleteAttendance(gid,pid,date);		
+		return Ajax.buildSuccessResult(attendanceService.listSummary(gid));				
 	}
 	
 	private String buildAttendanceSummaryJSONString() throws JsonGenerationException, JsonMappingException, IOException{

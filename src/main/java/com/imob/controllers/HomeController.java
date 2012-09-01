@@ -4,7 +4,7 @@ package com.imob.controllers;
 
 
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import com.imob.commons.Ajax;
 import com.imob.domains.Player;
 import com.imob.services.PlayerService;
 
@@ -46,12 +47,16 @@ public class HomeController {
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET})
 	@ResponseBody public Map<String,Object> login(HttpSession session,HttpServletResponse response,@RequestParam("pid") int pid) throws Exception {												
-		session.setAttribute("user", playerService.getPlayer(pid));		
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");	
-		
-		return result;	
+		if (pid == -1){
+			Player defaultPlayer = new Player();
+			defaultPlayer.setId(-1);
+			defaultPlayer.setName("guest");
+			session.setAttribute("user",defaultPlayer);
+			
+		}else{
+			session.setAttribute("user", playerService.getPlayer(pid));
+		}
+		return Ajax.buildSuccessResult();	
 	}
 	
 	

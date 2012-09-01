@@ -2,7 +2,7 @@ package com.imob.controllers;
 
 import java.io.IOException;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import com.imob.commons.Ajax;
 import com.imob.domains.Game;
 import com.imob.domains.Player;
 
@@ -56,20 +57,12 @@ public class RecordController {
 		game.setGid(gid);
 		game.setType(0);
 		gameService.addGame(game);
-						
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");
-		result.put("value", game);
-				
-		return result;				
+										
+		return Ajax.buildSuccessResult(game);				
 	}	
 	@RequestMapping(value = "/deleterecord", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> deleteRecord(@RequestParam("id") int id) {
-		gameService.deleteGame(id,gid);		
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");		
-		return result;				
+		gameService.deleteGame(id,gid);			
+		return Ajax.buildSuccessResult();				
 	}
 }

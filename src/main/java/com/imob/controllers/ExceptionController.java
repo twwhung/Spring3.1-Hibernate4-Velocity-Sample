@@ -1,7 +1,7 @@
 package com.imob.controllers;
 
 
-import java.util.HashMap;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import org.springframework.web.servlet.ModelAndView;
+
+import com.imob.commons.Ajax;
 
 
 @Controller
@@ -53,10 +55,8 @@ public class ExceptionController {
 	}
 	
 	private ModelAndView handleErrorMav(HttpServletRequest request,String errorMessage){
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", false);
-		result.put("message", errorMessage);	
-		request.setAttribute("errorMap", result);
+		
+		request.setAttribute("errorMap", Ajax.buildErrorResult(errorMessage));
 		ModelAndView mav = new ModelAndView("forward:/erroroutput");
 		return mav;	
 	}

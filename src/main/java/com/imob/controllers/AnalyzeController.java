@@ -3,7 +3,7 @@ package com.imob.controllers;
 import java.io.IOException;
 
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+import com.imob.commons.Ajax;
 import com.imob.domains.AttendanceStat;
 import com.imob.domains.PairSummary;
 import com.imob.domains.Player;
@@ -73,12 +74,7 @@ public class AnalyzeController {
 	}	
 	@RequestMapping(value = "/getsinglestat", method = RequestMethod.POST, produces="application/json", headers="X-Requested-With=XMLHttpRequest")
 	@ResponseBody public Map<String,Object> getSingleStat(@RequestParam("pid") int pid) {				
-		;
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("message", "ok");	
-		result.put("value",analyzeService.getSingleStat(gid, pid));
-		return result;				
+		return Ajax.buildSuccessResult(analyzeService.getSingleStat(gid, pid));				
 	}
 	
 	
